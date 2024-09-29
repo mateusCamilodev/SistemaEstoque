@@ -1,161 +1,121 @@
 package sistemaEstoque;
+
 import java.util.Scanner;
 
 public class sistemaEstoque {
-
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in); // Cria um objeto Scanner para ler a entrada do usuário
-        System.out.println("Bem vindo(a) ao sistema do estoque e compras!!!"); // Mensagem de boas-vindas
-        System.out.println("Faça seu cadastro..."); // Solicita cadastro do usuário
 
-        int tentativasRestantes = 3; // Define o número de tentativas de login
-        double saldo = 0.0; // Inicializa o saldo do usuário
-        int soma =0;
-        int contDeCompra = 0; // Contador de compras realizadas
+        Scanner sc = new Scanner(System.in);
 
-        String inventario[] = new String[10];
-        // Solicita o login e a senha
-        System.out.print("Login : ");
-        String login = sc.nextLine(); // Lê o login
-        System.out.print("Senha : ");
-        String senha = sc.nextLine(); // Lê a senha
-        System.out.println("Seus dados foram cadastrados"); // Confirma cadastro
-        System.out.println("Coloque o login e senha que você informou..."); // Solicita login e senha
-        System.out.println("-----------------------");
-        // Novamente solicita o login e a senha para autenticação
-        System.out.print("Login : ");
-        String login2 = sc.nextLine(); // Lê o login para validação
-        System.out.print("Senha : ");
-        String senha2 = sc.nextLine(); // Lê a senha para validação
-        // Loop para validar login e senha
-        while (!login2.equals(login) || !senha2.equals(senha)) {
-            System.out.println("Login ou senha estão inválidos..."); // Mensagem de erro
-            System.out.println("-----------------------");
-            // Verifica tentativas restantes
-            if (tentativasRestantes > 0) {
-                System.out.println("Tente novamente... tentativas restantes " + tentativasRestantes);
-                tentativasRestantes--; // Decrementa tentativas restantes
+        System.out.println("Bem-vindo(a) ao sistema de estoque e compras!");
+
+        int tentativasRestantes = 3;
+        double saldo = 0.0;
+        int contDeCompra = 0;
+        String[] inventario = new String[10];
+
+        // Cadastro do usuário
+        System.out.print("Login: ");
+        String login = sc.nextLine();
+        System.out.print("Senha: ");
+        String senha = sc.nextLine();
+        System.out.println("Dados cadastrados com sucesso!");
+
+        // Autenticação
+        while (true) {
+            System.out.print("Login: ");
+            String login2 = sc.nextLine();
+            System.out.print("Senha: ");
+            String senha2 = sc.nextLine();
+
+            if (login2.equals(login) && senha2.equals(senha)) {
+                System.out.println("Acesso liberado!");
+                break;
             }
-            else {
-                System.out.println("Acesso bloqueado por segurança!!!"); // Bloqueia acesso se tentativas esgotadas
-                break; // Sai do loop
+
+            if (--tentativasRestantes == 0) {
+                System.out.println("Acesso bloqueado por segurança!");
+                return;
             }
-            // Solicita novo login e senha
-            System.out.print("Login : ");
-            login2 = sc.nextLine(); // Lê novo login
-            System.out.print("Senha : ");
-            senha2 = sc.nextLine(); // Lê nova senha
+
+            System.out.println("Login ou senha inválidos. Tentativas restantes: " + tentativasRestantes);
         }
-        // Mensagem de acesso liberado
-        System.out.println("Acesso liberado!!!");
-        System.out.println("-----------------------");
-        // Menu de opções para o usuário
-        System.out.println("Deseja acessar qual aba???");
-        while (true) { // Loop para opções de menu
-            // Opções disponíveis
+
+        // Menu de opções
+        while (true) {
+            System.out.println("\nSelecione uma opção:");
             System.out.println("1) COMPRAS");
             System.out.println("2) VENDER");
             System.out.println("3) ORGANIZAR LOJA");
             System.out.println("4) ACESSAR ESTOQUE");
             System.out.println("5) SAIR");
-            int decisao = sc.nextInt(); // Lê a opção escolhida
-            // Se a opção for sair, termina o programa
+            int decisao = sc.nextInt();
+
             if (decisao == 5) {
                 System.out.println("Saindo...");
-                break; // Sai do loop
+                break;
             }
-            // Arrays dos produtos
-            String produtos[] = new String[5]; // Cria um array de produtos
-            produtos[0] = "unidut"; // Adiciona produtos ao array
-            produtos[1] = "condulete";
-            produtos[2] = "curva";
-            produtos[3] = "tampao";
-            produtos[4] = "trilho";
 
-            double precos[] = new double[5]; // Cria um array de preços
-            precos[0] = 3.49; // Adiciona preços ao array
-            precos[1] = 12.59;
-            precos[2] = 4.29;
-            precos[3] = 1.29;
-            precos[4] = 8.29;
-            // Se a opção escolhida for compras
+            String[] produtos = {"unidut", "condulete", "curva", "tampao", "trilho"};
+            double[] precos = {3.49, 12.59, 4.29, 1.29, 8.29};
+
+            // Opção de compras
             if (decisao == 1) {
-                for(int i = 0; i<10; i++){
-                    System.out.println("Carregando..." + i*10 + "%");
-                }
-                System.out.println("-----------------------");
-                System.out.println("Saldo: " + "R$" + saldo); // Exibe saldo atual
-
-                for (int i = 0; i < 5; i++) { // Loop para mostrar produtos disponíveis
-                    System.out.println((i + 1) + ") " + produtos[i] + " " + "R$: " + precos[i]); // Mostra produto e preço
-
+                System.out.printf("Saldo: %.2f\n", saldo);
+                for (int i = 0; i < produtos.length; i++) {
+                    System.out.printf("%d) %s - R$: %.2f\n", i + 1, produtos[i], precos[i]);
                 }
 
-                System.out.print("Escolha qual produto deseja comprar :");
-                int decisaoProduto  = sc.nextInt();// Lê a escolha do produto
+                System.out.print("Escolha um produto para comprar: ");
+                int decisaoProduto = sc.nextInt();
 
-
-
-                // Valida a escolha do produto
                 if (decisaoProduto < 1 || decisaoProduto > produtos.length) {
-                    System.out.println("Opção inválida!");// Mensagem de erro se a opção for inválida
+                    System.out.println("Opção inválida!");
                     continue;
                 }
 
-                double precoProduto = precos[decisaoProduto-1]; // Obtém o preço do produto escolhido
-
-                // Verifica se há saldo suficiente para a compra
+                double precoProduto = precos[decisaoProduto - 1];
                 if (saldo >= precoProduto) {
-                    saldo -= precoProduto; // Deduz o preço do saldo
-                    System.out.println("Parabéns você comprou um " + produtos[decisaoProduto - 1] + "!!!");
-                    System.out.printf("Compra realizada!!! Saldo: %.2f%n" , saldo); // Confirma compra
+                    saldo -= precoProduto;
+                    System.out.printf("Você comprou um %s! Saldo restante: %.2f\n", produtos[decisaoProduto - 1], saldo);
                     contDeCompra++;
 
-                    // Incrementa contador de compras
-                    inventario[0] = produtos[decisaoProduto -1];
-                }
-                else {
-                    System.out.println("Saldo insuficiente..."); // Mensagem de erro se o saldo for insuficiente
+                    for (int i = 0; i < inventario.length; i++) {
+                        if (inventario[i] == null) {
+                            inventario[i] = produtos[decisaoProduto - 1];
+                            break;
+                        }
+
+                    }
+
+                } else {
+                    System.out.println("Saldo insuficiente!");
                 }
             }
-            // Lógica para venda, caso compras tenham sido realizadas
-            if (decisao == 2 && contDeCompra > 0) {
-                // Implementar lógica de venda aqui
-                for(int i = 0; i<10; i++){
-                    System.out.println("Carregando..." + i*10 + "%");
+
+            // Opção de venda
+            if (decisao == 2) {
+                if (contDeCompra > 0) {
+                    System.out.println("Você comprou " + contDeCompra + " item(s).");
+                } else {
+                    System.out.println("Você não tem itens comprados para vender.");
                 }
-                System.out.println("-----------------------");
-                System.out.println("Itens comprados : " + contDeCompra);
             }
-            //lógica para venda, caso nenhuma compras tenham sido realizadas
-            else if (decisao == 2 && contDeCompra == 0){
-                for(int i = 0; i<10; i++){
-                    System.out.println("Carregando..." + i*10 + "%");
-                }
-                System.out.println("-----------------------");
-                System.out.println("Itens comprados : "+ contDeCompra);
-                System.out.println("Você não consegue vender pois não tem nada comprado...");
+
+            // Opção de organizar a loja
+            if (decisao == 3) {
+                System.out.println("Loja organizada! Você recebeu R$ 23,78.");
+                saldo += 23.78;
+                System.out.printf("Saldo atualizado: %.2f\n", saldo);
             }
-            //Se a opção escolhida for organizar a loja
-            if(decisao == 3){
-                System.out.println("Organizando loja...");
-                for(int i = 0; i<10; i++){
-                    System.out.println("Carrendo... " + i*10 + "%");
-                }
-                System.out.println("Você organizou a loja...");
-                System.out.println("-----------------------");
-                System.out.println("Você recebeu 23,78 de Saldo");
-                saldo = saldo + 23.78;
-                System.out.println("Saldo : " + saldo);
-            }
-            if (decisao == 4){
-                System.out.println("Acessando o estoque...");
-                for(int i = 0; i<10; i++){
-                    System.out.println("Carrendo... " + i*10 + "%");
-                }
-                System.out.println("Seus itens : " + inventario[0]);
+
+            // Acesso ao estoque
+            if (decisao == 4) {
+                System.out.println("Itens no inventário:");
+
             }
         }
-        sc.close();
+
+        sc.close(); // Fecha o scanner
     }
 }
