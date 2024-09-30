@@ -49,6 +49,7 @@ public class sistemaEstoque {
             System.out.println("3) ORGANIZAR LOJA");
             System.out.println("4) ACESSAR ESTOQUE");
             System.out.println("5) SAIR");
+
             int decisao = sc.nextInt();
 
             if (decisao == 5) {
@@ -80,6 +81,7 @@ public class sistemaEstoque {
                     System.out.printf("Você comprou um %s! Saldo restante: %.2f\n", produtos[decisaoProduto - 1], saldo);
                     contDeCompra++;
 
+                    //Loop para verificar se algum índice é nulo, para incrementar no inventário
                     for (int i = 0; i < inventario.length; i++) {
                         if (inventario[i] == null) {
                             inventario[i] = produtos[decisaoProduto - 1];
@@ -113,9 +115,13 @@ public class sistemaEstoque {
             if (decisao == 4) {
                 System.out.println("Itens no inventário:");
 
+                for(int i = 0; i< inventario.length; i++){
+                    System.out.println(inventario[i]);
+                }
             }
-        }
 
-        sc.close(); // Fecha o scanner
+
+        }
+        sc.close();
     }
 }
